@@ -25,7 +25,7 @@ export const HERO = {
     </>
   ),
   lead: "8,426개 이상의 콘텐츠와 전문 교육 파트너 네트워크를 기반으로 직무역량부터 자격증·외국어·조직문화까지. 보유·법정·제작·파트너 4개 축으로 정리해 딜리버리합니다.",
-  note: "※ 프로토타입 (A안 v3 · 4-Axis) — 보유 축은 AX·AI 34종 실데이터 탐색기, 법정·제작·파트너는 소개서 기준. 가격·결제 미노출.",
+  note: "※ 프로토타입 (A안 v3 · 4-Axis). 보유 축은 AX·AI 34종 실데이터 탐색기, 법정·제작·파트너는 소개서 기준. 가격·결제 미노출.",
   axisMap: {
     core: { value: "8,426", label: "개 과정 보유 · 매월 100+ 신규 (소개서 기준)" },
     quad: [
@@ -41,7 +41,7 @@ export const HERO = {
 export const AXIS_HAVE = {
   eyebrowNo: "01",
   eyebrow: "Library",
-  title: "보유 콘텐츠 — 8,426개 과정, 7개 체계",
+  title: "보유 콘텐츠, 8,426개 과정·7개 체계",
   lead: "규모에서 시작해 체계로, 다시 대표 과정으로. 필요한 학습을 한눈에 좁혀갑니다.",
   axtag: "매월 100+ 신규 제작",
   scale: {
@@ -109,7 +109,7 @@ export const AXIS_LEGAL = {
   eyebrow: "Compliance",
   title: (
     <>
-      법정 헌터스 — <span className="hl">반복되는 의무교육</span>을 콘텐츠 경쟁력으로
+      법정 헌터스, <span className="hl">반복되는 의무교육</span>을 콘텐츠 경쟁력으로
     </>
   ),
   lead: "매년 새로운 컨셉의 대표 시리즈로 몰입을 높이고, 근거·대상·주기까지 책임집니다.",
@@ -138,14 +138,14 @@ export const AXIS_LEGAL = {
     ["학습 경험", "이수 중심", "참여 중심"],
     ["맞춤 제작", "제한적", "기업 맞춤 제작"],
   ],
-  note: "※ 법적근거·주기는 대표 표기 — 실제 편성 시 최신 법령 기준으로 검증됩니다.",
+  note: "※ 법적근거·주기는 대표 표기이며, 실제 편성 시 최신 법령 기준으로 검증됩니다.",
 };
 
 /* ── 03 제작(STUDIO) ───────────────────────────────── */
 export const AXIS_MAKE = {
   eyebrowNo: "03",
   eyebrow: "Studio",
-  title: "맞춤형 제작 — 보유를 넘어, 직접 만듭니다",
+  title: "맞춤형 제작, 보유를 넘어 직접 만듭니다",
   lead: "자체 스튜디오와 AI 제작 파이프라인으로 기업 전용 콘텐츠를 빠르고 효과적으로.",
   consultAxis: "맞춤형 제작",
   infraLabel: "자체 제작 인프라",
@@ -180,7 +180,7 @@ export const AXIS_MAKE = {
 export const AXIS_NET = {
   eyebrowNo: "04",
   eyebrow: "Network",
-  title: "파트너 네트워크 — 국내 대표 교육기관과 함께",
+  title: "파트너 네트워크, 국내 대표 교육기관과 함께",
   lead: "자체 제작에 더해, 검증된 협력사 콘텐츠를 도입해 라이브러리를 넓힙니다.",
   axtag: "협력사 19+",
   contentLabel: "콘텐츠 협력사",
@@ -196,7 +196,7 @@ export const AXIS_NET = {
     mid: "단일 라이브러리",
     part: { h: "파트너 도입", s: "협력사 콘텐츠 소싱 · 현지화" },
   },
-  counter: { value: "100+", label: "매월 신규 콘텐츠 업데이트 — 최신 산업 트렌드·직무 변화 대응" },
+  counter: { value: "100+", label: "매월 신규 콘텐츠 업데이트로 최신 산업 트렌드·직무 변화 대응" },
 };
 
 /* ── FINAL 전환 ────────────────────────────────────── */

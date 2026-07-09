@@ -1066,6 +1066,7 @@
   transform: none;
 }
 .pv-head {
+  flex: none; /* 탭 전환 시 콘텐츠 높이 변화에도 축소 금지 → 헤더 Y 고정 */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1102,6 +1103,7 @@
   color: #fff;
 }
 .pv-tabs {
+  flex: none; /* 구분선(border-bottom)을 탭바에 고정 → 탭 전환 시 세로 이동 제거 */
   display: flex;
   gap: 4px;
   padding: 14px 32px 0;
@@ -1146,8 +1148,11 @@
   height: 16px;
 }
 .pv-body {
+  flex: 1 1 auto; /* 탭 간 높이 차이를 본문이 전부 흡수 → 헤더·탭 위치 불변 */
+  min-height: 0; /* flex 자식 스크롤 활성화(overflow-y가 실제로 동작) */
   padding: 24px 32px 30px;
   overflow-y: auto;
+  scrollbar-gutter: stable; /* 스크롤바 출현/소멸에 따른 가로 흔들림 차단 */
 }
 .pv-pane {
   display: none;
@@ -2440,6 +2445,36 @@
   border-radius: 999px;
   padding: 3px 10px;
   margin-left: 4px;
+}
+
+/* ── 필러 히어로 높이 통일(P1~P4) ──────────────────────
+   페이지 이동 시 히어로 크기가 튀지 않도록 최댓값(P1 ≈757px) 기준
+   min-height를 부여하고, 콘텐츠는 수직 중앙정렬. 태블릿 이하(≤920)는
+   콘텐츠가 이미 세로로 길어지므로 강제 높이를 풀어 여백 과다를 방지. */
+.ax-hero,
+.pillar-hero,
+.ct-hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+@media (min-width: 921px) {
+  .ax-hero,
+  .pillar-hero,
+  .ct-hero {
+    min-height: 760px;
+  }
+}
+
+/* 리드 한 줄 노출(줄바꿈 금지) — 좁은 화면(≤820)에서는 자동으로 다시 줄바꿈 허용 */
+.leadsub-nowrap {
+  white-space: nowrap;
+}
+@media (max-width: 820px) {
+  .leadsub-nowrap {
+    white-space: normal;
+    max-width: 56ch !important;
+  }
 }
 
 /* ── 필러 히어로(다크 트리트먼트) ──────────────────── */

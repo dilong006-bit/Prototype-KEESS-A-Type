@@ -479,7 +479,7 @@ export const GAP_INTRO = {
   eyebrow: "성과 증거",
   title: "교육 효과를 숫자로 보고합니다.",
   boxTitle: "사전-사후 GAP 분석",
-  caption: "* 개념 도식 — 실제 수치는 AX 성과 리포트로 제공됩니다.",
+  caption: "* 개념 도식이며, 실제 수치는 AX 성과 리포트로 제공됩니다.",
 };
 export type GapMetric = { label: string; pre: number; post: number };
 export const GAP_METRICS: GapMetric[] = [

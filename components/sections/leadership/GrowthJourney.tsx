@@ -11,6 +11,8 @@ export default function GrowthJourney() {
         eyebrow={JOURNEY.eyebrow}
         title={JOURNEY.title}
         sub={JOURNEY.lead}
+        subMaxWidth="none"
+        subNowrap
       />
 
       <div className="lj r">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useState, type ReactNode } from "react";
 import Button from "@/components/common/Button";
 
 /**
@@ -32,7 +32,11 @@ export default function PillarHero({
   onInquiry: () => void;
 }) {
   const [shown, setShown] = useState(false);
-  const words = data.titlePlain.split(" ");
+  // titlePlain의 "\n"을 명시적 줄바꿈으로 렌더(→<br/>). 각 줄은 공백으로 쪼개 단어별 등장.
+  // 애니메이션 지연은 줄을 가로질러 연속(줄 시작 오프셋 누적)이라 리듬이 끊기지 않음.
+  const lines = data.titlePlain.split("\n").map((l) => l.split(" "));
+  const lineOffsets: number[] = [];
+  lines.reduce((acc, l, i) => ((lineOffsets[i] = acc), acc + l.length), 0);
 
   useEffect(() => {
     const id = requestAnimationFrame(() => setShown(true));
@@ -52,11 +56,22 @@ export default function PillarHero({
         <div>
           <p className="eyebrow">{data.eyebrow}</p>
           <h1>
-            {words.map((w, i) => (
-              <span className="w" key={i} style={{ transitionDelay: `${i * 0.05}s` }}>
-                {w}
-                {i < words.length - 1 ? " " : ""}
-              </span>
+            {lines.map((lineWords, li) => (
+              <Fragment key={li}>
+                {li > 0 && <br />}
+                {lineWords.map((w, i) => (
+                  <Fragment key={i}>
+                    {/* 공백은 스팬 밖 텍스트 노드로 — .w가 inline-block이라 스팬 안 끝공백은 잘림 */}
+                    <span
+                      className="w"
+                      style={{ transitionDelay: `${(lineOffsets[li] + i) * 0.05}s` }}
+                    >
+                      {w}
+                    </span>
+                    {i < lineWords.length - 1 ? " " : ""}
+                  </Fragment>
+                ))}
+              </Fragment>
             ))}
           </h1>
           <p className="sub">{data.sub}</p>

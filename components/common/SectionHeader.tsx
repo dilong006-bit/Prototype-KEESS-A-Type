@@ -12,6 +12,10 @@ type SectionHeaderProps = {
   /** 각 요소에 reveal(.r) 부여 */
   reveal?: boolean;
   className?: string;
+  /** 리드 최대폭 오버라이드(기본 56ch). 한 줄 노출 시 "none" */
+  subMaxWidth?: string;
+  /** 데스크톱에서 리드를 한 줄로(줄바꿈 금지). ≤820은 CSS에서 자동 해제 */
+  subNowrap?: boolean;
 };
 
 export default function SectionHeader({
@@ -20,6 +24,8 @@ export default function SectionHeader({
   sub,
   reveal = false,
   className = "",
+  subMaxWidth,
+  subNowrap = false,
 }: SectionHeaderProps) {
   const r = reveal ? " r" : "";
   return (
@@ -32,12 +38,12 @@ export default function SectionHeader({
       )}
       {sub != null && (
         <p
-          className={`leadsub${r}`}
+          className={`leadsub${r}${subNowrap ? " leadsub-nowrap" : ""}`}
           style={{
             marginTop: 18,
             color: "var(--muted)",
             fontSize: "16.5px",
-            maxWidth: "56ch",
+            maxWidth: subMaxWidth ?? "56ch",
             lineHeight: 1.7,
             wordBreak: "keep-all",
           }}

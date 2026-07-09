@@ -13,6 +13,18 @@
   color: #fff;
   background: linear-gradient(135deg, var(--ink), var(--p1) 58%, var(--ink));
 }
+/* 실사 이미지 분위기 레이어 — 다크 그라데이션 하위, 저투명도로 텍스처만 부여
+   (D안 단일 컬럼 IA 유지, 표현만 강화). TODO: 실제 브랜드 자산으로 교체 */
+.ax-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1800&auto=format&fit=crop")
+    center / cover no-repeat;
+  opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
+}
 .ax-hero::after {
   content: "";
   position: absolute;
@@ -324,12 +336,14 @@
   border-radius: 6px;
   padding: 3px 8px;
   display: inline-block;
-  margin-bottom: 6px;
+  margin-right: 8px; /* 라벨과 가로 간격(붙음 방지) */
+  vertical-align: middle;
 }
 .ax-opt .ot {
   font-size: 15.5px;
   font-weight: 700;
   line-height: 1.4;
+  vertical-align: middle;
 }
 .ax-scen-panel {
   background: linear-gradient(140deg, var(--p1), var(--ink));
@@ -487,10 +501,18 @@
   padding: 26px;
 }
 .ax-dx .dxq {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14.5px;
   font-weight: 800;
   color: var(--p1);
   margin-bottom: 14px;
+}
+.ax-dx .dxq-ico {
+  width: 18px;
+  height: 18px;
+  flex: none;
 }
 .ax-dx-chips {
   display: flex;
@@ -779,6 +801,7 @@
   font-family: inherit;
 }
 .ax-qdot .pt {
+  position: relative;
   width: 13px;
   height: 13px;
   border-radius: 50%;
@@ -805,6 +828,40 @@
 .ax-qdot.on .lb {
   color: var(--p1);
   font-weight: 800;
+}
+/* 선택 원 바운딩 모션 — 선택 순간 1회(무한반복 금지). 팝 바운스 + 확산 링 */
+.ax-qdot.on .pt {
+  animation: ax-dot-pop 0.45s var(--ease) 1;
+}
+.ax-qdot.on .pt::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--p1);
+  pointer-events: none;
+  animation: ax-dot-ping 0.6s var(--ease-out) 1 forwards;
+}
+@keyframes ax-dot-pop {
+  0% {
+    transform: scale(1.5);
+  }
+  45% {
+    transform: scale(1.92);
+  }
+  100% {
+    transform: scale(1.5);
+  }
+}
+@keyframes ax-dot-ping {
+  from {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.4);
+  }
 }
 .ax-jpills {
   display: flex;
@@ -871,6 +928,28 @@
   color: var(--ink);
   margin-top: 9px;
   line-height: 1.45;
+}
+/* Lv1→Lv5 색상 차등 — --p1 단일 토큰을 흰색과 혼합해 점점 진해지는 스케일.
+   상단 액센트 바 + 카드 배경 틴트를 함께 심화(신규 hex 없음). */
+.ax-jstep:nth-child(1) {
+  border-top-color: color-mix(in srgb, var(--p1) 40%, #fff);
+  background: color-mix(in srgb, var(--p1) 3%, #fff);
+}
+.ax-jstep:nth-child(2) {
+  border-top-color: color-mix(in srgb, var(--p1) 55%, #fff);
+  background: color-mix(in srgb, var(--p1) 5%, #fff);
+}
+.ax-jstep:nth-child(3) {
+  border-top-color: color-mix(in srgb, var(--p1) 70%, #fff);
+  background: color-mix(in srgb, var(--p1) 7%, #fff);
+}
+.ax-jstep:nth-child(4) {
+  border-top-color: color-mix(in srgb, var(--p1) 85%, #fff);
+  background: color-mix(in srgb, var(--p1) 9%, #fff);
+}
+.ax-jstep:nth-child(5) {
+  border-top-color: var(--p1);
+  background: color-mix(in srgb, var(--p1) 11%, #fff);
 }
 .ax-job-note {
   margin-top: 16px;
@@ -1196,5 +1275,11 @@
   .ax-jstep {
     opacity: 1;
     transform: none;
+  }
+  .ax-qdot.on .pt {
+    animation: none;
+  }
+  .ax-qdot.on .pt::after {
+    display: none;
   }
 }

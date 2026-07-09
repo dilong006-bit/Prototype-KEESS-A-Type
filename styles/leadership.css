@@ -252,9 +252,19 @@
   transform-origin: 170px 170px;
   transition: transform 0.35s var(--ease), opacity 0.5s ease;
 }
-.lw-seg:focus-visible {
+/* 클릭 시 브라우저 기본 사각형 포커스링 제거(불필요한 사각형) */
+.lw-seg:focus {
   outline: none;
 }
+.lw-seg path {
+  transition: stroke 0.25s var(--ease), stroke-width 0.25s var(--ease);
+}
+/* 선택(active) 세그먼트 — 흰 테두리로 어느 영역이 선택됐는지 명확히 인지 */
+.lw-seg.on path {
+  stroke: #fff;
+  stroke-width: 3;
+}
+/* 키보드 포커스는 접근성 위해 유지하되 사각형이 아닌 path 강조로 */
 .lw-seg:focus-visible path {
   stroke: var(--ink);
   stroke-width: 2.5;
@@ -482,6 +492,13 @@
   padding: 18px 12px;
   text-align: center;
   background: var(--surface);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease),
+    border-color 0.25s var(--ease);
+}
+.gdim:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: var(--shadow-2);
+  border-color: color-mix(in srgb, var(--p2) 45%, var(--line));
 }
 .gdim .gv {
   font-size: 16px;

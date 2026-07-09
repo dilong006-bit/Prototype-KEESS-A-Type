@@ -59,7 +59,23 @@ export default function FrameworkStair() {
       />
 
       <div className="ax-dx r">
-        <div className="dxq">{FRAMEWORK_INTRO.dxLabel}</div>
+        <div className="dxq">
+          <svg
+            className="dxq-ico"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.9"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7" />
+            <path d="M21 21l-4.2-4.2" />
+            <path d="M11 8v3.2M11 14h.01" />
+          </svg>
+          {FRAMEWORK_INTRO.dxLabel}
+        </div>
         <div className="ax-dx-chips">
           {DX_CHIPS.map((c) => (
             <button

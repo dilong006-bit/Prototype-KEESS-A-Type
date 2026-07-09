@@ -27,11 +27,11 @@ export const HERO = {
     <>
       여러 곳에 맡기던 HRD를,
       <br />
-      <span className="g">한 곳에서</span>
+      <span className="g">한곳에서</span>
     </>
   ),
-  titlePlain: "여러 곳에 맡기던 HRD를, 한 곳에서",
-  sub: "시스템·운영·콘텐츠 제작을 하나로 — 벤더를 늘리지 않고, 검증된 인프라로 통합 운영합니다.",
+  titlePlain: "여러 곳에 맡기던 HRD를,\n한곳에서",
+  sub: "시스템·운영·콘텐츠 제작을 한 곳에 모읍니다. 벤더를 늘리지 않아도, 검증된 인프라로 전 과정을 통합 운영합니다.",
   strip: ["시스템·운영·제작 3축 풀스택", "30+사 운영 실적", "자체 스튜디오 3개소"],
   stats: [
     { value: "3축", label: "풀스택" },
@@ -52,7 +52,7 @@ export type PainRow = {
   solutionDesc: string;
 };
 export const PAIN = {
-  eyebrow: "HRD 담당자의 현실 — 그리고 KG의 답",
+  eyebrow: "HRD 담당자의 현실, 그리고 KG의 답",
   title: (
     <>
       따로따로 관리하던 일, <span className="g">한 번에 풀립니다</span>
@@ -115,7 +115,7 @@ export const SOLUTION = {
   ),
   lead: (
     <>
-      위탁운영부터 연수원 구축, 콘텐츠 제작까지 —{" "}
+      위탁운영부터 연수원 구축, 콘텐츠 제작까지 아우르는{" "}
       <span className="g">HRD의 모든 것</span>
     </>
   ),
@@ -262,7 +262,7 @@ export const KGESA = {
     { id: "float", name: "플로팅 메뉴", on: false },
   ] as Widget[],
   ctrlHint:
-    "테마를 바꾸거나 위젯을 켜고 끄고 순서를 조정해 보세요 — 왼쪽 학습자 화면이 즉시 반영됩니다.",
+    "테마를 바꾸거나 위젯을 켜고 끄고 순서를 조정해 보세요. 왼쪽 학습자 화면이 즉시 반영됩니다.",
   aiJourney: {
     eyebrow: "AI가 함께하는 학습",
     title: (
@@ -330,7 +330,7 @@ export const GOV = {
       교육비, <span className="g">정부지원으로 돌려받으세요</span>
     </>
   ),
-  lead: "고용보험 가입 재직자 대상 사업주훈련비 환급 — 인정 신청부터 비용 정산까지, KG에듀원이 위탁 훈련기관으로 대행합니다.",
+  lead: "고용보험 가입 재직자 대상 사업주훈련비 환급을, 인정 신청부터 비용 정산까지 KG에듀원이 위탁 훈련기관으로 대행합니다.",
   cards: [
     {
       eyebrow: "WHO · 지원 대상",
@@ -377,7 +377,7 @@ export const INQUIRY = {
       진단부터 시작하세요
     </>
   ),
-  sub: "시스템·운영·제작을 하나로 — 조직에 맞는 HRD 솔루션을 함께 설계합니다. 도입 문의를 남겨주시면 담당자가 연락드립니다.",
+  sub: "시스템·운영·제작을 하나로 묶어, 조직에 맞는 HRD 솔루션을 함께 설계합니다. 도입 문의를 남겨주시면 담당자가 연락드립니다.",
   trust: ["3축 풀스택", "30+사 운영 실적", "자체 스튜디오 3개소"],
   /** 기본 관심영역 + P3 전용 추가 옵션(정부지원 환급) */
   defaultInterest: "HRD 통합 솔루션",

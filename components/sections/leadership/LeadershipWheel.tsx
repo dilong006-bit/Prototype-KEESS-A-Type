@@ -96,6 +96,8 @@ export default function LeadershipWheel() {
         eyebrow={FRAMEWORK_INTRO.eyebrow}
         title={FRAMEWORK_INTRO.title}
         sub={FRAMEWORK_INTRO.lead}
+        subMaxWidth="none"
+        subNowrap
       />
       <div className="lw-wrap r" ref={rootRef}>
         <svg
@@ -107,12 +109,15 @@ export default function LeadershipWheel() {
           {segs.map((s, i) => {
             const isActive = active === i;
             const isHover = hover === i;
+            // 선택(active) 또는 hover 시 세그먼트를 바깥으로 살짝 당겨 선택상태를 명확히 표시
             const tf =
-              isHover && !reduce ? `translate(${s.dx}px, ${s.dy}px)` : "none";
+              (isHover || isActive) && !reduce
+                ? `translate(${s.dx}px, ${s.dy}px)`
+                : "none";
             return (
               <g
                 key={i}
-                className="lw-seg"
+                className={`lw-seg${isActive ? " on" : ""}`}
                 role="button"
                 tabIndex={0}
                 aria-label={`${WHEEL_TRACKS[i].ko} ${WHEEL_TRACKS[i].t}`}
