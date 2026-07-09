@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   Design.md §3 디자인 토큰 — 확정 홈(keess_home_C_v18) 1:1
+   신규 값 생성 금지. 모든 색·간격·라운드·그림자·이징은 이 토큰 경유.
+   ========================================================= */
+:root {
+  /* Neutral base — 홈/코퍼레이트 canonical */
+  --bg: #fafafb;
+  --ink: #14141a;
+  --muted: #54585f;
+  --line: #e6e8ec;
+  --surface: #f3f5f8;
+
+  /* Pillar accents — 포인트 컬러 전용 */
+  --p1: #2e1a6b; /* AX·AI 전환 · Royal Purple */
+  --p2: #e91e63; /* 리더십·조직 · Magenta */
+  --p3: #8b27a8; /* HRD 통합 솔루션 · Violet */
+  --p4: #f58220; /* 콘텐츠 솔루션 · Orange */
+  --gov: #f4b83a; /* 정부지원 · Yellow (크로스 배지) */
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1); /* 기본 감속 */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1); /* 강한 감속 */
+
+  /* Layout */
+  --maxw: 1200px; /* 홈·코퍼레이트 (필러 페이지는 1180px) */
+  --gut: 24px; /* 좌우 거터 */
+  --serif: "Gowun Batang", serif; /* 디스플레이/선언 전용 */
+  --r: 20px; /* 카드·톤 박스 기본 라운드 */
+  --r-input: 11px; /* 입력/셀렉트 라운드(현행값 명명 — 폼 정책 공통) */
+
+  /* 폼 정책 토큰(재사용 폼 공통) — 신규 비주얼 아님, 리듬값 명명 */
+  --field-gap: 16px; /* 스택 필드/행 그룹 세로 리듬 */
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(20, 20, 26, 0.05), 0 2px 8px rgba(20, 20, 26, 0.05);
+  --shadow-2: 0 2px 6px rgba(20, 20, 26, 0.06), 0 10px 26px rgba(20, 20, 26, 0.09);
+  --shadow-3: 0 6px 14px rgba(20, 20, 26, 0.08), 0 22px 52px rgba(20, 20, 26, 0.14);
+}
+
+/* =========================================================
+   필러 틴트 (Design.md §3-1 / §13) — 해당 페이지 wrapper에서
+   --bg / --surface / --ink / --line 4값만 오버라이드.
+   필러색(--p1~--p4)·shadow·ease·font는 동일 상속.
+   ========================================================= */
+/* --pillar: 페이지 필러 액센트 별칭(신규 색 아님, --pN 참조) — 공용 .pillar-* 재사용용 */
+.tint-p1 {
+  /* AX·AI — 보라 틴트 */
+  --bg: #fcfcfe;
+  --surface: #f4f2fb;
+  --ink: #15131d;
+  --line: #eae8f2;
+  --pillar: var(--p1);
+}
+.tint-p2 {
+  /* 리더십 — 마젠타 틴트 */
+  --bg: #fdfbfc;
+  --surface: #fcebf2;
+  --ink: #181318;
+  --line: #f0e3ea;
+  --pillar: var(--p2);
+}
+.tint-p3 {
+  /* HRD — 바이올렛 틴트 */
+  --surface: #f4eafa;
+  --line: #ece0f4;
+  --ink: #1a1420;
+  --pillar: var(--p3);
+}
+.tint-p4 {
+  /* 콘텐츠 — 웜 틴트 */
+  --surface: #f7f4ef;
+  --ink: #15131d;
+  --pillar: var(--p4);
+}
+
+/* =========================================================
+   Base — 확정 원본 body 규칙 이식
+   ========================================================= */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-pretendard), "Pretendard Variable", Pretendard,
+      system-ui, sans-serif;
+    line-height: 1.6;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+  :focus-visible {
+    outline: 2px solid var(--p1);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

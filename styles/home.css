@@ -1,0 +1,257 @@
+/* =========================================================
+   home.css — 홈(/) 페이지 전용 섹션 스타일
+   keess_home_C_v18_최종확정 원본 이식(클래스명·토큰값 동일).
+   공통 컴포넌트 스타일은 styles/components.css 참조.
+   ========================================================= */
+
+/* ── Intro ──────────────────────────────────────────── */
+.intro {
+  text-align: center;
+  position: relative;
+}
+.intro .lead {
+  font-family: var(--serif);
+  font-size: clamp(26px, 4vw, 46px);
+  font-weight: 700;
+  line-height: 1.32;
+  max-width: 20ch;
+  margin: 0 auto;
+  letter-spacing: -0.01em;
+}
+.intro .leadsub {
+  margin-top: 22px;
+  color: var(--muted);
+  font-size: 17px;
+  max-width: 62ch;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+.intro .midrule {
+  width: 0;
+  height: 2px;
+  background: var(--p1);
+  margin: 34px auto 0;
+  transition: width 0.9s var(--ease);
+}
+.intro .midrule.in {
+  width: 64px;
+}
+
+/* ── Stats (dark) ───────────────────────────────────── */
+.stats {
+  background: var(--ink);
+  color: #fff;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+@media (max-width: 760px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+}
+
+/* ── Manifesto ──────────────────────────────────────── */
+.manifesto {
+  position: relative;
+  min-height: 72vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+}
+.man-bg {
+  position: absolute;
+  inset: -8% 0;
+  z-index: 0;
+  background-image: linear-gradient(135deg, #161022, #2e1a6b);
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+}
+.man-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+  opacity: 0.38;
+  will-change: transform;
+}
+.man-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgba(10, 8, 18, 0.55);
+  opacity: 0.7;
+  transition: opacity 1s var(--ease);
+}
+.manifesto.in .man-scrim {
+  opacity: 1;
+}
+.manifesto .wrap {
+  position: relative;
+  z-index: 3;
+}
+.manifesto h2 {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(30px, 5.2vw, 60px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  max-width: 18ch;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+}
+.manifesto.in h2 {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── References ─────────────────────────────────────── */
+.ref-block {
+  margin-top: 42px;
+}
+.ref-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+.ref-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 740px) {
+  .ref-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.ref-cap {
+  margin-top: 20px;
+  font-size: 13px;
+  color: #9aa0a8;
+}
+
+/* ── Cert grid ──────────────────────────────────────── */
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 42px;
+}
+@media (max-width: 820px) {
+  .cert-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── FAQ foot ───────────────────────────────────────── */
+.faq-foot {
+  margin-top: 34px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.faq-foot-t {
+  font-size: 15.5px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.faq-cta {
+  padding: 13px 26px;
+  font-size: 15px;
+}
+
+/* ── Inquiry (문의 폼) ──────────────────────────────── */
+.inq {
+  background: var(--surface);
+}
+.inq-grid {
+  display: grid;
+  grid-template-columns: 0.82fr 1.18fr;
+  gap: 40px;
+  align-items: stretch;
+}
+@media (max-width: 880px) {
+  .inq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.inq-side {
+  border-radius: 22px;
+  padding: 40px;
+  color: #fff;
+  background: linear-gradient(150deg, #2e1a6b, #5a2f8f 70%, #8b27a8);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 340px;
+  box-shadow: var(--shadow-3);
+}
+.inq-side::after {
+  content: "";
+  position: absolute;
+  right: -60px;
+  bottom: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+}
+.inq-side .lead {
+  font-family: var(--serif);
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  line-height: 1.32;
+  position: relative;
+}
+.inq-side .leadsub {
+  margin-top: 16px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 14.5px;
+  line-height: 1.7;
+  position: relative;
+  word-break: keep-all;
+}
+.inq-side .trust {
+  position: relative;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+/* ContactForm 크롬(.form / .submit / .filebox / .filehint / .hp / .done)
+   → 전 페이지 재사용(홈·필러 #inq)이므로 components.css로 이전.
+   .frow / .chips / .mchip / consent 계열도 동일 사유로 이전됨. */
+
+/* 동의(consent) 그룹 → components.css로 이전(공용 모달에서 사용) */
+
+@media (prefers-reduced-motion: reduce) {
+  .intro .midrule {
+    width: 64px;
+  }
+  .manifesto h2 {
+    opacity: 1;
+    transform: none;
+  }
+  .manifesto .man-scrim {
+    opacity: 1;
+  }
+}

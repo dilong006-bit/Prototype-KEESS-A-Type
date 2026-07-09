@@ -1,0 +1,592 @@
+/* =========================================================
+   leadership.css — P2(/leadership) 고유 레이아웃만. 홈 디자인 시스템 준수.
+   ⚠️ 시안(P2 프로토타입) 스타일 발췌·복붙 금지. --mg/--acc/--pink·btn-mg 등 신설 금지.
+   색·간격·라운드·그림자·이징은 홈 토큰(var(--*))만. 마젠타 액센트=--p2.
+   휠 6세그먼트/타임라인 레일은 --p2 파생 마젠타 스케일(데이터 시각화 포인트).
+   공통 요소(.section/.eyebrow/.btn/.card 등)는 components.css 재사용.
+   ========================================================= */
+
+/* ── PAIN (4칩) ────────────────────────────────────── */
+.lead-pain {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 34px;
+}
+@media (max-width: 900px) {
+  .lead-pain {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 520px) {
+  .lead-pain {
+    grid-template-columns: 1fr;
+  }
+}
+.pain-chip {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--p2);
+  border-radius: var(--r);
+  padding: 22px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.5;
+  box-shadow: var(--shadow-1);
+}
+.pain-chip b {
+  color: var(--p2);
+}
+
+/* ── JOURNEY 타임라인(6) + ARCHITECTURE(5) ─────────── */
+.lj {
+  position: relative;
+  margin-top: 40px;
+}
+.lj-rail {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 24px;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--p2) 35%, #fff),
+    var(--p2)
+  );
+  opacity: 0.5;
+}
+.lj-steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+}
+@media (max-width: 900px) {
+  .lj-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .lj-rail {
+    display: none;
+  }
+}
+@media (max-width: 520px) {
+  .lj-steps {
+    grid-template-columns: 1fr;
+  }
+}
+.lj-step {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px 16px;
+  box-shadow: var(--shadow-1);
+}
+.lj-num {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  background: var(--p2);
+  margin-bottom: 12px;
+}
+.lj-stage {
+  font-size: 16px;
+  font-weight: 800;
+}
+.lj-role {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--p2);
+  letter-spacing: 0.03em;
+  margin-top: 2px;
+}
+.lj-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 12px;
+}
+.lj-tags span {
+  font-size: 11.5px;
+  color: var(--muted);
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+.lj-arch {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-top: 22px;
+}
+@media (max-width: 880px) {
+  .lj-arch {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .lj-arch {
+    grid-template-columns: 1fr;
+  }
+}
+.lj-acard {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 16px;
+  background: #fff;
+}
+.lj-acard .an {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--p2);
+  letter-spacing: 0.04em;
+}
+.lj-acard .at {
+  font-size: 15px;
+  font-weight: 800;
+  margin-top: 8px;
+}
+.lj-acard .ad {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 7px;
+  line-height: 1.5;
+}
+
+/* ── TRACKS (6 카드) ───────────────────────────────── */
+.lead-tracks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 34px;
+}
+@media (max-width: 880px) {
+  .lead-tracks {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 520px) {
+  .lead-tracks {
+    grid-template-columns: 1fr;
+  }
+}
+.tcard {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 22px;
+  box-shadow: var(--shadow-1);
+  transition: transform 0.3s var(--ease), box-shadow 0.4s var(--ease);
+}
+.tcard:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-2);
+}
+.tcard .ti {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--p2) 12%, #fff);
+  color: var(--p2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+}
+.tcard .tk {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--p2);
+  letter-spacing: 0.04em;
+  margin-top: 14px;
+}
+.tcard h4 {
+  font-size: 17px;
+  font-weight: 800;
+  margin-top: 4px;
+}
+.tcard p {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.55;
+}
+
+/* ── FRAMEWORK 리더십 휠 ───────────────────────────── */
+.lw-wrap {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 32px;
+  align-items: center;
+  margin-top: 36px;
+}
+@media (max-width: 880px) {
+  .lw-wrap {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    justify-items: center;
+  }
+}
+.lw-svg {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  justify-self: center;
+}
+@media (max-width: 480px) {
+  .lw-svg {
+    max-width: 280px;
+  }
+}
+.lw-seg {
+  cursor: pointer;
+  transform-origin: 170px 170px;
+  transition: transform 0.35s var(--ease), opacity 0.5s ease;
+}
+.lw-seg:focus-visible {
+  outline: none;
+}
+.lw-seg:focus-visible path {
+  stroke: var(--ink);
+  stroke-width: 2.5;
+}
+.lw-detail {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 28px;
+  box-shadow: var(--shadow-1);
+  min-height: 240px;
+  width: 100%;
+}
+.lw-detail .wd-hint {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--p2);
+  letter-spacing: 0.04em;
+}
+.lw-detail .wd-name {
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 8px;
+}
+.lw-detail .wd-desc {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 12px;
+  line-height: 1.7;
+}
+.lw-detail .wd-caps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 16px;
+}
+.lw-detail .wd-caps span {
+  font-size: 12.5px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 6px 12px;
+}
+
+/* ── OFFLINE 스텝퍼 ────────────────────────────────── */
+.ls {
+  margin-top: 36px;
+}
+.ls-steps {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ls-step {
+  flex: 1;
+  min-width: 150px;
+  position: relative;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 16px 18px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s var(--ease);
+}
+.ls-step:hover {
+  border-color: color-mix(in srgb, var(--p2) 45%, var(--line));
+}
+.ls-step.on {
+  border-color: var(--p2);
+  background: color-mix(in srgb, var(--p2) 6%, #fff);
+  box-shadow: var(--shadow-1);
+}
+.ls-step .lsn {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--p2);
+  letter-spacing: 0.04em;
+}
+.ls-step b {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+.ls-step .lsnm {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.ls-step .lsar {
+  position: absolute;
+  right: -13px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  color: color-mix(in srgb, var(--p2) 55%, #fff);
+  font-size: 16px;
+  font-weight: 700;
+}
+@media (max-width: 760px) {
+  .ls-steps {
+    flex-direction: column;
+  }
+  .ls-step .lsar {
+    display: none;
+  }
+}
+.ls-panel {
+  margin-top: 22px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 26px;
+  box-shadow: var(--shadow-1);
+}
+.ls-phead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.ls-phead .pnm {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--p2);
+}
+.ls-phead .pen {
+  font-size: 14px;
+  color: var(--ink);
+}
+.ls-phead .pmod {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+.ls-subs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+@media (max-width: 760px) {
+  .ls-subs {
+    grid-template-columns: 1fr;
+  }
+}
+.ls-sub {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  background: var(--surface);
+}
+.ls-sub b {
+  font-size: 14.5px;
+  font-weight: 800;
+}
+.ls-sub .sd {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+.ls-caps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+.ls-caps span {
+  font-size: 11.5px;
+  color: var(--p2);
+  background: color-mix(in srgb, var(--p2) 10%, #fff);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+/* ── GROWTH-FIT ────────────────────────────────────── */
+.gf {
+  position: relative;
+  margin-top: 32px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 34px;
+  box-shadow: var(--shadow-1);
+}
+.gf h3 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-top: 8px;
+}
+.gf > p {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 12px;
+  line-height: 1.7;
+  max-width: 60ch;
+}
+.gf-dims {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+@media (max-width: 760px) {
+  .gf-dims {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .gf-dims {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.gdim {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 12px;
+  text-align: center;
+  background: var(--surface);
+}
+.gdim .gv {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--p2);
+}
+.gdim .gl {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+/* ── WHY (3카드) + FACULTY(4스텝) ──────────────────── */
+.lead-why {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 34px;
+}
+@media (max-width: 820px) {
+  .lead-why {
+    grid-template-columns: 1fr;
+  }
+}
+.wcard {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 24px;
+  box-shadow: var(--shadow-1);
+}
+.wcard .wn {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--p2);
+}
+.wcard h4 {
+  font-size: 17px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+.wcard p {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.6;
+}
+.fac-inline {
+  margin-top: 34px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 28px;
+}
+.fac-inline .fac-sub {
+  font-size: 14.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.7;
+}
+.fac-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-top: 20px;
+}
+@media (max-width: 760px) {
+  .fac-steps {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .fac-steps {
+    grid-template-columns: 1fr;
+  }
+}
+.fstep {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--p2);
+  border-radius: 14px;
+  padding: 16px;
+}
+.fstep .fsn {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--p2);
+  letter-spacing: 0.03em;
+}
+.fstep b {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 800;
+  margin-top: 8px;
+}
+.fstep p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lw-seg {
+    opacity: 1 !important;
+    transition: none;
+  }
+}
