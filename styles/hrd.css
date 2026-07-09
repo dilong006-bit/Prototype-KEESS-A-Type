@@ -272,6 +272,18 @@
   padding-bottom: 8px;
   scrollbar-width: thin;
 }
+/* 데스크톱(≥1041): 7축을 한 행에 정확히 맞춰 불필요한 가로 스크롤 제거.
+   minmax(0,1fr)로 카드가 컨테이너에 맞게 줄어들어 오버플로 0 보장.
+   좁은 화면(≤1040)은 위 기본 규칙의 가로 스크롤 유지(모바일 의도). */
+@media (min-width: 1041px) {
+  .how-tl {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    grid-auto-columns: auto;
+    overflow-x: visible;
+    padding-bottom: 0;
+  }
+}
 .htl-step {
   position: relative;
   background: #fff;
