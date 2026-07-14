@@ -229,7 +229,7 @@ export default function ContactForm({
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 8,
+              gap: 10,
               flexWrap: "wrap",
             }}
           >
@@ -239,7 +239,7 @@ export default function ContactForm({
               value={emailLocal}
               placeholder="이메일 아이디"
               onChange={(e) => onEmailLocal(e.target.value)}
-              style={{ flex: "1 1 150px", width: "auto", minWidth: 0 }}
+              style={{ flex: "1 1 160px", width: "auto", minWidth: 0 }}
             />
             <span
               aria-hidden="true"
@@ -262,7 +262,7 @@ export default function ContactForm({
                 value={emailDomain}
                 aria-label="이메일 도메인 선택"
                 onChange={(e) => onEmailDomain(e.target.value)}
-                style={{ flex: "1 1 150px", width: "auto", minWidth: 0 }}
+                style={{ flex: "1 1 160px", width: "auto", minWidth: 0 }}
               >
                 <option value="">이메일 선택</option>
                 {EMAIL_DOMAINS.map((d) => (
@@ -273,8 +273,19 @@ export default function ContactForm({
               </select>
             )}
             <label
-              className="consent-main"
-              style={{ flex: "none", fontSize: "13.5px" }}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 7,
+                flex: "none",
+                padding: "0 2px",
+                fontSize: "13.5px",
+                color: "var(--muted)",
+                fontWeight: 600,
+                whiteSpace: "nowrap",
+                cursor: "pointer",
+                lineHeight: 1,
+              }}
             >
               <input
                 type="checkbox"
@@ -282,6 +293,14 @@ export default function ContactForm({
                 onChange={(e) => {
                   setEmailDirect(e.target.checked);
                   onEmailDomain("");
+                }}
+                style={{
+                  flex: "none",
+                  width: 16,
+                  height: 16,
+                  margin: 0,
+                  accentColor: "var(--p1)",
+                  cursor: "pointer",
                 }}
               />
               직접입력
