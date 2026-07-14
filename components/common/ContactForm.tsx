@@ -1,8 +1,7 @@
 "use client";
 
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import {
-  SECTOR_OPTIONS,
   SIZE_OPTIONS,
   INTEREST_OPTIONS,
   FILE_HINT,
@@ -10,10 +9,10 @@ import {
   CONSENT_PRIVACY,
 } from "@/data/home";
 
-// TEMP: 정보보호팀 확정 문구로 교체 (F4). 마케팅 약관 본문은 이 상수 1곳에서만 교체하면 됩니다.
-const TERMS_MARKETING = `〔임시〕현행 KEESS 마케팅 정보 수신 동의 약관 본문. 수집 항목: 이름, 전화번호, 이메일. 이용 목적: 마케팅·이벤트·EDM 발송. 보유·이용 기간: 동의 철회 시까지. 동의를 거부할 수 있으며, 미동의 시 마케팅 정보 수신이 제한됩니다.`;
+// TEMP: 정보보호팀 확정 문구로 교체. 마케팅 약관 본문은 이 상수 1곳에서만 교체하면 됩니다.
+const TERMS_MARKETING = `〔임시〕현행 KEESS 마케팅 정보 수신 동의 약관 본문. 수집 항목: 이름, 전화번호, 이메일. 수신 채널: 이메일·SMS·전화. 이용 목적: 마케팅·이벤트·EDM 발송. 보유·이용 기간: 동의 철회 시까지. 동의를 거부할 수 있으며, 미동의 시 마케팅 정보 수신이 제한됩니다.`;
 
-// F2 회사 규모(전사 임직원 수) 옵션 — value≠label(비필수). 신규 색·스타일 없음(.field select 재사용).
+// 회사 규모(전사 임직원 수) 옵션 — value≠label(비필수). 신규 색·스타일 없음(.field select 재사용).
 const COMPANY_SIZE_OPTIONS: { value: string; label: string }[] = [
   { value: "lt50", label: "50인 미만" },
   { value: "50-300", label: "50~300인 미만" },
@@ -23,7 +22,7 @@ const COMPANY_SIZE_OPTIONS: { value: string; label: string }[] = [
 
 /**
  * ContactForm (Design.md §5 Contact/Diagnostic Form) — 홈 #inq 폼 이식.
- * 부문·규모·회사·담당자·이메일·연락처·관심영역(칩)·문의내용·첨부·동의(필수/선택).
+ * 회사·담당자·이메일(필수) + 연락처·직급·회사규모·교육규모·관심영역·문의·첨부·동의(선택).
  * 프로토타입이므로 실제 전송 없이 인라인 검증 + 성공 상태 UI만(백엔드 없음).
  * 관심영역 기본 선택은 defaultInterests로 주입(필러 페이지 재사용 대비).
  */
@@ -56,29 +55,46 @@ export default function ContactForm({
   extraInterests = [],
 }: ContactFormProps) {
   const interestOptions = [...INTEREST_OPTIONS, ...extraInterests];
-  const [sector, setSector] = useState("");
-  const [size, setSize] = useState("");
   const [company, setCompany] = useState("");
-  const [name, setName] = useState("");
+  const [name, setName] = useState(""); // 담당자명(contactName)
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [companySize, setCompanySize] = useState(""); // F2 비필수
-  const [jobTitle, setJobTitle] = useState(""); // F3 비필수
+  const [jobTitle, setJobTitle] = useState(""); // 선택
+  const [companySize, setCompanySize] = useState(""); // 선택
+  const [size, setSize] = useState(""); // 교육 대상 규모(trainScale) · 선택
   const [interests, setInterests] = useState<Set<string>>(
     new Set(defaultInterests),
   );
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
   const [consentPrivacy, setConsentPrivacy] = useState(false);
-  const [consentMkt, setConsentMkt] = useState(false);
+  // 마케팅 동의 — 3채널 개별 + 전체 동의(3채널 파생)
+  const [mktEmail, setMktEmail] = useState(false);
+  const [mktSms, setMktSms] = useState(false);
+  const [mktTel, setMktTel] = useState(false);
+  const agreeMarketing = mktEmail && mktSms && mktTel;
+  const someMkt = mktEmail || mktSms || mktTel;
+  const mktAllRef = useRef<HTMLInputElement>(null);
   const [privOpen, setPrivOpen] = useState(false);
   const [mktOpen, setMktOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
   const [done, setDone] = useState(false);
   const honeypot = useRef<HTMLInputElement>(null);
-  // 제출 수집 객체(백엔드 없음 → 구성만, 전송 안 함). 신규 필드 키 포함.
+  // 제출 수집 객체(백엔드 없음 → 구성만, 전송 안 함).
   const lastSubmit = useRef<Record<string, unknown> | null>(null);
   const uid = useId();
+
+  // 전체 동의 체크박스 indeterminate: 일부만 체크된 상태 표시
+  useEffect(() => {
+    if (mktAllRef.current)
+      mktAllRef.current.indeterminate = someMkt && !agreeMarketing;
+  }, [someMkt, agreeMarketing]);
+
+  const setAllMkt = (v: boolean) => {
+    setMktEmail(v);
+    setMktSms(v);
+    setMktTel(v);
+  };
 
   const toggleInterest = (label: string) =>
     setInterests((prev) => {
@@ -97,9 +113,8 @@ export default function ContactForm({
       setDone(true);
       return;
     }
+    // 필수는 회사·기관명 / 담당자명 / 이메일 / 개인정보 동의 4개뿐.
     const next: Record<string, boolean> = {
-      sector: !sector,
-      size: !size,
       company: !company.trim(),
       name: !name.trim(),
       email: !emailOk(email),
@@ -107,21 +122,23 @@ export default function ContactForm({
     };
     setErrors(next);
     if (Object.values(next).some(Boolean)) return;
-    // 수집 객체 구성(전송 로직 없음). 신규 키: companySize · jobTitle · agreeMarketing,
-    // 관심영역에는 '법정 필수' 선택 시 자동 포함.
+    // 수집 객체 구성(전송 로직 없음). 나머지 필드는 전부 선택.
     lastSubmit.current = {
-      sector,
-      size,
       company: company.trim(),
-      name: name.trim(),
+      contactName: name.trim(),
       email: email.trim(),
       phone: phone.trim(),
-      companySize,
       jobTitle: jobTitle.trim(),
-      interests: [...interests],
+      companySize,
+      trainScale: size,
+      interest: [...interests], // '법정 필수' 선택 시 자동 포함
       message: message.trim(),
+      attachment: fileName,
       agreePrivacy: consentPrivacy,
-      agreeMarketing: consentMkt,
+      agreeMarketing,
+      agreeMarketingEmail: mktEmail,
+      agreeMarketingSms: mktSms,
+      agreeMarketingTel: mktTel,
     };
     setDone(true);
   };
@@ -138,50 +155,12 @@ export default function ContactForm({
     );
   }
 
+  const channelLabelStyle = { flex: "none" as const, fontSize: "13.5px" };
+
   return (
     <div className="form">
       <div id="form-body">
-        <div className="frow">
-          <div className={`field${errors.sector ? " invalid" : ""}`}>
-            <label htmlFor={`${uid}-sector`}>
-              부문 <span className="req">*</span>
-            </label>
-            <select
-              id={`${uid}-sector`}
-              value={sector}
-              onChange={(e) => {
-                setSector(e.target.value);
-                clear("sector", !!e.target.value);
-              }}
-            >
-              <option value="">선택</option>
-              {SECTOR_OPTIONS.map((o) => (
-                <option key={o}>{o}</option>
-              ))}
-            </select>
-            <span className="err">부문을 선택해 주세요.</span>
-          </div>
-          <div className={`field${errors.size ? " invalid" : ""}`}>
-            <label htmlFor={`${uid}-size`}>
-              교육 대상 규모 <span className="req">*</span>
-            </label>
-            <select
-              id={`${uid}-size`}
-              value={size}
-              onChange={(e) => {
-                setSize(e.target.value);
-                clear("size", !!e.target.value);
-              }}
-            >
-              <option value="">선택</option>
-              {SIZE_OPTIONS.map((o) => (
-                <option key={o}>{o}</option>
-              ))}
-            </select>
-            <span className="err">규모를 선택해 주세요.</span>
-          </div>
-        </div>
-
+        {/* 1행: 회사·기관명* · 담당자명* */}
         <div className="frow">
           <div className={`field${errors.company ? " invalid" : ""}`}>
             <label htmlFor={`${uid}-company`}>
@@ -189,6 +168,7 @@ export default function ContactForm({
             </label>
             <input
               id={`${uid}-company`}
+              name="company"
               value={company}
               onChange={(e) => {
                 setCompany(e.target.value);
@@ -203,6 +183,7 @@ export default function ContactForm({
             </label>
             <input
               id={`${uid}-name`}
+              name="contactName"
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
@@ -213,6 +194,7 @@ export default function ContactForm({
           </div>
         </div>
 
+        {/* 2행: 이메일* · 연락처 */}
         <div className="frow">
           <div className={`field${errors.email ? " invalid" : ""}`}>
             <label htmlFor={`${uid}-email`}>
@@ -220,6 +202,7 @@ export default function ContactForm({
             </label>
             <input
               id={`${uid}-email`}
+              name="email"
               type="email"
               value={email}
               onChange={(e) => {
@@ -227,22 +210,40 @@ export default function ContactForm({
                 clear("email", emailOk(e.target.value));
               }}
             />
-            <span className="err">올바른 이메일을 입력해 주세요.</span>
+            <span className="err">
+              {!email.trim()
+                ? "이메일을 입력해 주세요."
+                : "올바른 이메일을 입력해 주세요."}
+            </span>
           </div>
           <div className="field">
             <label htmlFor={`${uid}-phone`}>연락처</label>
             <input
               id={`${uid}-phone`}
+              name="phone"
+              type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
           </div>
         </div>
 
-        {/* F2·F3: 회사 규모(전사 임직원 수) · 직급/직책 — 둘 다 비필수 */}
+        {/* 3행: 직급/직책 · 회사 규모(임직원 수) — 둘 다 선택 */}
         <div className="frow">
           <div className="field">
-            <label htmlFor={`${uid}-companySize`}>회사 규모</label>
+            <label htmlFor={`${uid}-jobTitle`}>직급/직책</label>
+            <input
+              id={`${uid}-jobTitle`}
+              name="jobTitle"
+              type="text"
+              maxLength={40}
+              placeholder="예: 인사팀 과장 / 교육담당"
+              value={jobTitle}
+              onChange={(e) => setJobTitle(e.target.value)}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor={`${uid}-companySize`}>회사 규모 (임직원 수)</label>
             <select
               id={`${uid}-companySize`}
               name="companySize"
@@ -256,19 +257,24 @@ export default function ContactForm({
                 </option>
               ))}
             </select>
-            <div className="filehint">전사 임직원 수 기준 (교육 인원과 별개)</div>
           </div>
+        </div>
+
+        {/* 4행: 교육 대상 규모(교육 인원) — 선택 · 우측 셀 비움 */}
+        <div className="frow">
           <div className="field">
-            <label htmlFor={`${uid}-jobTitle`}>직급/직책</label>
-            <input
-              id={`${uid}-jobTitle`}
-              name="jobTitle"
-              type="text"
-              maxLength={40}
-              placeholder="예: 인사팀 과장 / 교육담당"
-              value={jobTitle}
-              onChange={(e) => setJobTitle(e.target.value)}
-            />
+            <label htmlFor={`${uid}-size`}>교육 대상 규모 (교육 인원)</label>
+            <select
+              id={`${uid}-size`}
+              name="trainScale"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+            >
+              <option value="">선택</option>
+              {SIZE_OPTIONS.map((o) => (
+                <option key={o}>{o}</option>
+              ))}
+            </select>
           </div>
         </div>
 
@@ -300,6 +306,7 @@ export default function ContactForm({
           <label htmlFor={`${uid}-msg`}>문의 내용</label>
           <textarea
             id={`${uid}-msg`}
+            name="message"
             rows={3}
             placeholder="도입을 검토 중인 교육 주제와 예상 인원·시기, 해결하고 싶은 조직 과제를 남겨주시면 담당 컨설턴트가 맞춤 상담으로 안내드립니다. (예: 임직원 300명 대상 AX 전환 교육을 3분기 중 검토 중입니다.)"
             value={message}
@@ -317,6 +324,7 @@ export default function ContactForm({
           </label>
           <input
             id={`${uid}-file`}
+            name="attachment"
             type="file"
             style={{ display: "none" }}
             accept=".zip,.pdf,.hwp,.ppt,.pptx,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif"
@@ -340,6 +348,7 @@ export default function ContactForm({
             <label className="consent-main">
               <input
                 type="checkbox"
+                name="agreePrivacy"
                 checked={consentPrivacy}
                 onChange={(e) => {
                   setConsentPrivacy(e.target.checked);
@@ -366,13 +375,16 @@ export default function ContactForm({
             <ConsentText blocks={CONSENT_PRIVACY} />
           </div>
 
+          {/* 마케팅 정보 수신 동의 — 전체 동의 + 3채널 개별 */}
           <div className="consent">
             <label className="consent-main">
               <input
+                ref={mktAllRef}
                 type="checkbox"
+                id={`${uid}-mktAll`}
                 name="agreeMarketing"
-                checked={consentMkt}
-                onChange={(e) => setConsentMkt(e.target.checked)}
+                checked={agreeMarketing}
+                onChange={(e) => setAllMkt(e.target.checked)}
               />
               <span>
                 <b className="c-tag opt-tag">선택</b> 마케팅 정보 수신 동의
@@ -387,10 +399,48 @@ export default function ContactForm({
               전문 보기
             </button>
           </div>
-          {/* TEMP: 정보보호팀 확정 문구로 교체 (F4) */}
+          {/* TEMP: 정보보호팀 확정 문구로 교체 */}
           <p className="filehint">
-            수집 항목: 이름, 전화번호, 이메일 · 마케팅(EDM) 정보 발송 목적
+            수집 항목: 이름, 전화번호, 이메일 · 마케팅(EDM·이벤트) 정보 발송 목적
           </p>
+          <div
+            className="agree-channels"
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "8px 18px",
+              marginTop: 8,
+              marginLeft: 28,
+            }}
+          >
+            <label className="consent-main" style={channelLabelStyle}>
+              <input
+                type="checkbox"
+                name="agreeMarketingEmail"
+                checked={mktEmail}
+                onChange={(e) => setMktEmail(e.target.checked)}
+              />
+              이메일
+            </label>
+            <label className="consent-main" style={channelLabelStyle}>
+              <input
+                type="checkbox"
+                name="agreeMarketingSms"
+                checked={mktSms}
+                onChange={(e) => setMktSms(e.target.checked)}
+              />
+              SMS(문자)
+            </label>
+            <label className="consent-main" style={channelLabelStyle}>
+              <input
+                type="checkbox"
+                name="agreeMarketingTel"
+                checked={mktTel}
+                onChange={(e) => setMktTel(e.target.checked)}
+              />
+              전화(TM)
+            </label>
+          </div>
           <div
             className="consent-text"
             style={{ maxHeight: mktOpen ? 260 : 0 }}

@@ -338,7 +338,6 @@ export const INQUIRY_SIDE = {
   trust: ["정부 3년 인증", "ISMS", "동시접속 2만 운영"],
 };
 
-export const SECTOR_OPTIONS = ["기업 (B2B)", "공공·기관 (B2G)"];
 export const SIZE_OPTIONS = ["~50명", "50~300명", "300~1,000명", "1,000명+"];
 export const INTEREST_OPTIONS = [
   "AX·AI 전환",
