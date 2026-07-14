@@ -193,6 +193,12 @@ export default function ContactForm({
   }
 
   const channelLabelStyle = { flex: "none" as const, fontSize: "13.5px" };
+  // 이메일 로컬/도메인 입력 공용 크기 — select↔input 토글 시 폭 재분배(시프트) 방지 위해 동일 flex 유지
+  const emailFieldStyle = {
+    flex: "1 1 160px" as const,
+    width: "auto" as const,
+    minWidth: 0,
+  };
 
   return (
     <div className="form">
@@ -288,7 +294,7 @@ export default function ContactForm({
               value={emailLocal}
               placeholder="이메일 아이디"
               onChange={(e) => onEmailLocal(e.target.value)}
-              style={{ flex: "1 1 160px", width: "auto", minWidth: 0 }}
+              style={emailFieldStyle}
             />
             <span
               aria-hidden="true"
@@ -303,7 +309,7 @@ export default function ContactForm({
                 placeholder="직접 입력 (예: company.com)"
                 aria-label="이메일 도메인 직접 입력"
                 onChange={(e) => onEmailDomain(e.target.value)}
-                style={{ flex: "1 1 150px", width: "auto", minWidth: 0 }}
+                style={emailFieldStyle}
               />
             ) : (
               <select
@@ -311,7 +317,7 @@ export default function ContactForm({
                 value={emailDomain}
                 aria-label="이메일 도메인 선택"
                 onChange={(e) => onEmailDomain(e.target.value)}
-                style={{ flex: "1 1 160px", width: "auto", minWidth: 0 }}
+                style={emailFieldStyle}
               >
                 <option value="">이메일 선택</option>
                 {EMAIL_DOMAINS.map((d) => (
