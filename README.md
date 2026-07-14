@@ -87,7 +87,7 @@ npm run dev      # → http://localhost:3000  (A안 포트 고정)
 - **공용 `PillarHero` + `.pillar-*` 시스템**: P2/P3 히어로·문의 패널을 단일 소스로 통합(리팩토링 완료), `var(--pillar)`로 필러색 자동 적용.
 - **접근성**: 시맨틱 마크업, `:focus-visible`, 터치 타깃 ≥44px, `prefers-reduced-motion` 대응.
 
-## 8. 개선 이력 (Iteration Log · A안 v1.1)
+## 8. 개선 이력 (Iteration Log · A안 v1.1–v1.2)
 
 로컬 검증(포트 3000) 피드백을 반영한 개선 내역입니다. 모든 변경은 디자인 헌법(신규 토큰 0·발명 금지)을 준수하며, CDP 실측·스크린샷으로 검증했습니다.
 
@@ -112,6 +112,23 @@ npm run dev      # → http://localhost:3000  (A안 포트 고정)
 **P3 · HRD**
 - 히어로 카피/줄바꿈 정리(`여러 곳에 맡기던 HRD를, / 한곳에서`) 및 서브 문구 리라이팅.
 - 히어로/정부지원/문의 카피 `—` 정리.
+
+### 배포 후 피드백 반영 (v1.2)
+
+Vercel 배포([prototype-keess-a-type.vercel.app](https://prototype-keess-a-type.vercel.app/)) 공유 후 접수된 피드백 반영. 자동 배포(GitHub push → Vercel) 연동 상태.
+
+**P3 · HRD**
+- **HOW 7축 가로 스크롤 제거**: 7카드 최소폭(`minmax(150px,1fr)`×7)+gap 합계가 컨테이너(1132px)를 2px 초과해 생기던 스크롤바를, 데스크톱(≥1041)에서 `repeat(7,minmax(0,1fr))`로 한 행에 정확히 맞춰 제거. 좁은 화면은 기존 가로 스크롤 유지.
+
+**P4 · 콘텐츠**
+- 하단 CTA 카피 교체: 제목 `필요한 교육이 다르면, / 구성도 달라야 합니다`, 설명 문구(명시적 줄바꿈 적용), 우측 버튼 `4개 축 다시 보기` → `교육 구성 살펴보기`.
+
+**공용 상담 신청 폼**(ContactForm · 홈 #inq·P2·P3 재사용) — 문의 접수 항목 고도화(F1~F5)
+- **F1** 관심영역에 `법정 필수` 칩 추가(6번째, 기존 `.mchip` 동일 스타일·로직).
+- **F2·F3** '연락처' 다음 2열 행 신설: `회사 규모`(select `companySize` 4구간, 전사 임직원 수) · `직급/직책`(input `jobTitle`, maxlength 40). 둘 다 비필수.
+- **F4** 마케팅 동의: `name=agreeMarketing`, 수집항목 보조문구, 약관 본문을 `TERMS_MARKETING` 단일 상수로 격리(TEMP 주석 · 확정 문구 1곳 교체).
+- **F5** 문의 내용 textarea 상담 유도 placeholder 추가.
+- 신규 3필드 전부 비필수(미입력 제출 통과), 기존 필수 검증 불변, 신규 색·토큰 0. 데스크톱 2열 → 모바일 1열 반응형 기존 동일.
 
 ## 9. 품질 검수 (Definition of Done)
 
