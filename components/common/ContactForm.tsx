@@ -2,7 +2,6 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import {
-  SIZE_OPTIONS,
   INTEREST_OPTIONS,
   FILE_HINT,
   INQUIRY_DONE,
@@ -18,6 +17,16 @@ const COMPANY_SIZE_OPTIONS: { value: string; label: string }[] = [
   { value: "50-300", label: "50~300인 미만" },
   { value: "300-1000", label: "300~1,000인 미만" },
   { value: "gte1000", label: "1,000인 이상" },
+];
+
+// 예상 교육인원(trainScale) 옵션 — value≠label(비필수). 신규 색·스타일 없음.
+const TRAIN_SCALE_OPTIONS: { value: string; label: string }[] = [
+  { value: "none", label: "해당없음" },
+  { value: "lte50", label: "~ 50명" },
+  { value: "lte100", label: "~ 100명" },
+  { value: "lte500", label: "~ 500명" },
+  { value: "lte1000", label: "~ 1000명" },
+  { value: "gt1000", label: "~ 1000명 이상" },
 ];
 
 // 이메일 도메인 선택 옵션(+ '직접입력'으로 자유 도메인). 신규 색·스타일 없음.
@@ -139,10 +148,12 @@ export default function ContactForm({
       setDone(true);
       return;
     }
-    // 필수는 회사·기관명 / 담당자명 / 이메일 / 개인정보 동의 4개뿐.
+    // 필수 6개: 회사·기관명 / 담당자명 / 연락처 / 직급·직책 / 이메일 / 개인정보 동의.
     const next: Record<string, boolean> = {
       company: !company.trim(),
       name: !name.trim(),
+      phone: !phone.trim(),
+      jobTitle: !jobTitle.trim(),
       email: !emailOk(fullEmail),
       consent: !consentPrivacy,
     };
@@ -220,7 +231,45 @@ export default function ContactForm({
           </div>
         </div>
 
-        {/* 2행: 이메일* — 전체 한 줄. 아이디 @ 도메인(선택/직접입력) */}
+        {/* 2행: 연락처* · 직급/직책* */}
+        <div className="frow">
+          <div className={`field${errors.phone ? " invalid" : ""}`}>
+            <label htmlFor={`${uid}-phone`}>
+              연락처 <span className="req">*</span>
+            </label>
+            <input
+              id={`${uid}-phone`}
+              name="phone"
+              type="tel"
+              value={phone}
+              onChange={(e) => {
+                setPhone(e.target.value);
+                clear("phone", !!e.target.value.trim());
+              }}
+            />
+            <span className="err">연락처를 입력해 주세요.</span>
+          </div>
+          <div className={`field${errors.jobTitle ? " invalid" : ""}`}>
+            <label htmlFor={`${uid}-jobTitle`}>
+              직급/직책 <span className="req">*</span>
+            </label>
+            <input
+              id={`${uid}-jobTitle`}
+              name="jobTitle"
+              type="text"
+              maxLength={40}
+              placeholder="예: 인사팀 과장 / 교육담당"
+              value={jobTitle}
+              onChange={(e) => {
+                setJobTitle(e.target.value);
+                clear("jobTitle", !!e.target.value.trim());
+              }}
+            />
+            <span className="err">직급/직책을 입력해 주세요.</span>
+          </div>
+        </div>
+
+        {/* 3행: 이메일* — 전체 한 줄. 아이디 @ 도메인(선택/직접입력) */}
         <div className={`field${errors.email ? " invalid" : ""}`}>
           <label htmlFor={`${uid}-email`}>
             이메일 <span className="req">*</span>
@@ -313,33 +362,7 @@ export default function ContactForm({
           </span>
         </div>
 
-        {/* 3행: 연락처 · 직급/직책 — 둘 다 선택 */}
-        <div className="frow">
-          <div className="field">
-            <label htmlFor={`${uid}-phone`}>연락처</label>
-            <input
-              id={`${uid}-phone`}
-              name="phone"
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor={`${uid}-jobTitle`}>직급/직책</label>
-            <input
-              id={`${uid}-jobTitle`}
-              name="jobTitle"
-              type="text"
-              maxLength={40}
-              placeholder="예: 인사팀 과장 / 교육담당"
-              value={jobTitle}
-              onChange={(e) => setJobTitle(e.target.value)}
-            />
-          </div>
-        </div>
-
-        {/* 4행: 회사 규모(임직원 수) · 교육 대상 규모(교육 인원) — 둘 다 선택 */}
+        {/* 4행: 회사 규모(임직원 수) · 예상 교육인원 — 둘 다 선택 */}
         <div className="frow">
           <div className="field">
             <label htmlFor={`${uid}-companySize`}>회사 규모 (임직원 수)</label>
@@ -358,16 +381,20 @@ export default function ContactForm({
             </select>
           </div>
           <div className="field">
-            <label htmlFor={`${uid}-size`}>교육 대상 규모 (교육 인원)</label>
+            <label htmlFor={`${uid}-size`}>예상 교육인원</label>
             <select
               id={`${uid}-size`}
               name="trainScale"
               value={size}
               onChange={(e) => setSize(e.target.value)}
             >
-              <option value="">선택</option>
-              {SIZE_OPTIONS.map((o) => (
-                <option key={o}>{o}</option>
+              <option value="" disabled>
+                예상 교육인원
+              </option>
+              {TRAIN_SCALE_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
               ))}
             </select>
           </div>

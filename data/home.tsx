@@ -338,13 +338,11 @@ export const INQUIRY_SIDE = {
   trust: ["정부 3년 인증", "ISMS", "동시접속 2만 운영"],
 };
 
-export const SIZE_OPTIONS = ["~50명", "50~300명", "300~1,000명", "1,000명+"];
 export const INTEREST_OPTIONS = [
   "AX·AI 전환",
   "리더십·조직",
   "HRD 통합 솔루션",
   "콘텐츠 솔루션",
-  "정부지원",
   "법정 필수",
 ];
 export const FILE_HINT =
