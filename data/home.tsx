@@ -346,6 +346,7 @@ export const INTEREST_OPTIONS = [
   "HRD 통합 솔루션",
   "콘텐츠 솔루션",
   "정부지원",
+  "법정 필수",
 ];
 export const FILE_HINT =
   "zip·pdf·hwp·ppt·pptx·doc·docx·xls·xlsx·jpg·png·gif / 최대 10MB";
