@@ -20,6 +20,19 @@ const COMPANY_SIZE_OPTIONS: { value: string; label: string }[] = [
   { value: "gte1000", label: "1,000인 이상" },
 ];
 
+// 이메일 도메인 선택 옵션(+ '직접입력'으로 자유 도메인). 신규 색·스타일 없음.
+const EMAIL_DOMAINS = [
+  "naver.com",
+  "gmail.com",
+  "hanmail.net",
+  "daum.net",
+  "kakao.com",
+  "nate.com",
+];
+
+const buildEmail = (local: string, domain: string) =>
+  local.trim() && domain.trim() ? `${local.trim()}@${domain.trim()}` : "";
+
 /**
  * ContactForm (Design.md §5 Contact/Diagnostic Form) — 홈 #inq 폼 이식.
  * 회사·담당자·이메일(필수) + 연락처·직급·회사규모·교육규모·관심영역·문의·첨부·동의(선택).
@@ -57,7 +70,9 @@ export default function ContactForm({
   const interestOptions = [...INTEREST_OPTIONS, ...extraInterests];
   const [company, setCompany] = useState("");
   const [name, setName] = useState(""); // 담당자명(contactName)
-  const [email, setEmail] = useState("");
+  const [emailLocal, setEmailLocal] = useState(""); // 이메일 아이디
+  const [emailDomain, setEmailDomain] = useState(""); // 도메인(선택/직접입력)
+  const [emailDirect, setEmailDirect] = useState(false); // 직접입력 모드
   const [phone, setPhone] = useState("");
   const [jobTitle, setJobTitle] = useState(""); // 선택
   const [companySize, setCompanySize] = useState(""); // 선택
@@ -107,6 +122,17 @@ export default function ContactForm({
   const clear = (key: string, valid: boolean) =>
     setErrors((e) => (valid && e[key] ? { ...e, [key]: false } : e));
 
+  // 이메일 = 아이디 + '@' + 도메인(선택 또는 직접입력)
+  const fullEmail = buildEmail(emailLocal, emailDomain);
+  const onEmailLocal = (v: string) => {
+    setEmailLocal(v);
+    clear("email", emailOk(buildEmail(v, emailDomain)));
+  };
+  const onEmailDomain = (v: string) => {
+    setEmailDomain(v);
+    clear("email", emailOk(buildEmail(emailLocal, v)));
+  };
+
   const submit = () => {
     // 허니팟: 봇이 채우면 조용히 무시(성공 위장)
     if (honeypot.current?.value) {
@@ -117,7 +143,7 @@ export default function ContactForm({
     const next: Record<string, boolean> = {
       company: !company.trim(),
       name: !name.trim(),
-      email: !emailOk(email),
+      email: !emailOk(fullEmail),
       consent: !consentPrivacy,
     };
     setErrors(next);
@@ -126,7 +152,7 @@ export default function ContactForm({
     lastSubmit.current = {
       company: company.trim(),
       contactName: name.trim(),
-      email: email.trim(),
+      email: fullEmail,
       phone: phone.trim(),
       jobTitle: jobTitle.trim(),
       companySize,
@@ -194,28 +220,82 @@ export default function ContactForm({
           </div>
         </div>
 
-        {/* 2행: 이메일* · 연락처 */}
-        <div className="frow">
-          <div className={`field${errors.email ? " invalid" : ""}`}>
-            <label htmlFor={`${uid}-email`}>
-              이메일 <span className="req">*</span>
-            </label>
+        {/* 2행: 이메일* — 전체 한 줄. 아이디 @ 도메인(선택/직접입력) */}
+        <div className={`field${errors.email ? " invalid" : ""}`}>
+          <label htmlFor={`${uid}-email`}>
+            이메일 <span className="req">*</span>
+          </label>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              flexWrap: "wrap",
+            }}
+          >
             <input
               id={`${uid}-email`}
-              name="email"
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                clear("email", emailOk(e.target.value));
-              }}
+              name="emailLocal"
+              value={emailLocal}
+              placeholder="이메일 아이디"
+              onChange={(e) => onEmailLocal(e.target.value)}
+              style={{ flex: "1 1 150px", width: "auto", minWidth: 0 }}
             />
-            <span className="err">
-              {!email.trim()
-                ? "이메일을 입력해 주세요."
-                : "올바른 이메일을 입력해 주세요."}
+            <span
+              aria-hidden="true"
+              style={{ flex: "none", color: "var(--muted)", fontWeight: 700 }}
+            >
+              @
             </span>
+            {emailDirect ? (
+              <input
+                name="emailDomain"
+                value={emailDomain}
+                placeholder="직접 입력 (예: company.com)"
+                aria-label="이메일 도메인 직접 입력"
+                onChange={(e) => onEmailDomain(e.target.value)}
+                style={{ flex: "1 1 150px", width: "auto", minWidth: 0 }}
+              />
+            ) : (
+              <select
+                name="emailDomain"
+                value={emailDomain}
+                aria-label="이메일 도메인 선택"
+                onChange={(e) => onEmailDomain(e.target.value)}
+                style={{ flex: "1 1 150px", width: "auto", minWidth: 0 }}
+              >
+                <option value="">이메일 선택</option>
+                {EMAIL_DOMAINS.map((d) => (
+                  <option key={d} value={d}>
+                    {d}
+                  </option>
+                ))}
+              </select>
+            )}
+            <label
+              className="consent-main"
+              style={{ flex: "none", fontSize: "13.5px" }}
+            >
+              <input
+                type="checkbox"
+                checked={emailDirect}
+                onChange={(e) => {
+                  setEmailDirect(e.target.checked);
+                  onEmailDomain("");
+                }}
+              />
+              직접입력
+            </label>
           </div>
+          <span className="err">
+            {!emailLocal.trim() || !emailDomain.trim()
+              ? "이메일을 입력해 주세요."
+              : "올바른 이메일을 입력해 주세요."}
+          </span>
+        </div>
+
+        {/* 3행: 연락처 · 직급/직책 — 둘 다 선택 */}
+        <div className="frow">
           <div className="field">
             <label htmlFor={`${uid}-phone`}>연락처</label>
             <input
@@ -226,10 +306,6 @@ export default function ContactForm({
               onChange={(e) => setPhone(e.target.value)}
             />
           </div>
-        </div>
-
-        {/* 3행: 직급/직책 · 회사 규모(임직원 수) — 둘 다 선택 */}
-        <div className="frow">
           <div className="field">
             <label htmlFor={`${uid}-jobTitle`}>직급/직책</label>
             <input
@@ -242,6 +318,10 @@ export default function ContactForm({
               onChange={(e) => setJobTitle(e.target.value)}
             />
           </div>
+        </div>
+
+        {/* 4행: 회사 규모(임직원 수) · 교육 대상 규모(교육 인원) — 둘 다 선택 */}
+        <div className="frow">
           <div className="field">
             <label htmlFor={`${uid}-companySize`}>회사 규모 (임직원 수)</label>
             <select
@@ -258,10 +338,6 @@ export default function ContactForm({
               ))}
             </select>
           </div>
-        </div>
-
-        {/* 4행: 교육 대상 규모(교육 인원) — 선택 · 우측 셀 비움 */}
-        <div className="frow">
           <div className="field">
             <label htmlFor={`${uid}-size`}>교육 대상 규모 (교육 인원)</label>
             <select
